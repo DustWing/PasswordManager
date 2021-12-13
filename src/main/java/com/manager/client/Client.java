@@ -1,24 +1,25 @@
 package com.manager.client;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.manager.model.Password;
 import com.manager.util.AesGcmEncryption;
+import com.pass.grpc.PasswordDetails;
 import com.pass.grpc.PasswordRequest;
 import com.pass.grpc.PasswordResponse;
 import com.pass.grpc.PasswordServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-public class Client {
+public final class Client {
+
+    private static final Logger logger = LogManager.getLogger(Client.class);
 
     public static void main(String[] args) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 8080)
@@ -32,12 +33,9 @@ public class Client {
 
         channel.shutdown();
 
+        logger.info(passwordResponse.toString());
 
-        List<Password> passwordList = new Gson().fromJson(
-                passwordResponse.getPasswords().toStringUtf8(),
-                new TypeToken<ArrayList<Password>>() {
-                }.getType()
-        );
+        List<PasswordDetails> passwordList = passwordResponse.getPasswordsList();
 
         SecretKey secretKey;
         try {
@@ -46,9 +44,6 @@ public class Client {
             e.printStackTrace();
             return;
         }
-
-
-        System.out.println(passwordResponse.getPasswords().toStringUtf8());
 
 
         passwordList.forEach(e -> {
