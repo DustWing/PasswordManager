@@ -1,5 +1,6 @@
 package com.manager.client;
 
+import com.google.protobuf.Empty;
 import com.manager.util.AesGcmEncryption;
 import com.pass.grpc.PasswordDetails;
 import com.pass.grpc.PasswordRequest;
@@ -29,7 +30,7 @@ public final class Client {
 
         PasswordServiceGrpc.PasswordServiceBlockingStub stub = PasswordServiceGrpc.newBlockingStub(channel);
 
-        PasswordResponse passwordResponse = stub.password(PasswordRequest.newBuilder().build());
+        PasswordResponse passwordResponse = stub.password(PasswordRequest.newBuilder().setUsername("admin").build());
 
         channel.shutdown();
 
@@ -47,35 +48,32 @@ public final class Client {
 
 
         passwordList.forEach(e -> {
-            final byte[] IV = Base64.getDecoder().decode(e.getIv().getBytes(StandardCharsets.UTF_8));
+            final byte[] userNameIV = Base64.getDecoder().decode(e.getUsername().substring(0, 16).getBytes(StandardCharsets.UTF_8));
+            final byte[] passwordIV = Base64.getDecoder().decode(e.getPassword().substring(0, 16).getBytes(StandardCharsets.UTF_8));
+
 
             try {
-                final String user =
+                final String username =
                         AesGcmEncryption.decryptFromBase64(
-                                e.getUsername(), secretKey, IV
+                                e.getUsername().substring(16), secretKey, userNameIV
                         );
 
                 final String password = AesGcmEncryption.decryptFromBase64(
-                        e.getPassword(), secretKey, IV
+                        e.getPassword().substring(16), secretKey, passwordIV
                 );
 
-                final String url = AesGcmEncryption.decryptFromBase64(
-                        e.getUrl(), secretKey, IV
-                );
-
-                final String description = AesGcmEncryption.decryptFromBase64(
-                        e.getDescription(), secretKey, IV
-                );
+                final String url = e.getDomain();
 
 
-                System.out.println("User:" + user +
+                final String description = e.getDescription();
+
+                logger.info("Username:" + username +
                         "\t Password:" + password +
                         "\t Url:" + url +
-                        "\t Description:" + description
-                );
+                        "\t Description:" + description);
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+                logger.error("", ex);
             }
         });
 

@@ -1,4 +1,4 @@
-<b>Generate keys</b>
+<b>TODO</b>
 
 https://en.wikipedia.org/wiki/Zero-knowledge_proof
 
@@ -11,8 +11,18 @@ https://en.wikipedia.org/wiki/Stream_cipher
 
 
 
-Implement encryption
+Implement encryption - done 
 
-Implement decryption
+Implement decryption - done
 
-Add database
+Use Grpc - done
+
+Add database - pending
+
+Create dao layer - pending
+
+Check spring for gRCP support - pending
+
+Create login page - pending
+
+Write documentation - pending

@@ -1,5 +1,6 @@
 package com.manager.server;
 
+import com.manager.services.CreateUserServiceImpl;
 import com.manager.services.PasswordServiceImpl;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
@@ -19,7 +20,10 @@ public final class ServerStarter {
 
         Server server = ServerBuilder
                 .forPort(8080)
-                .addService(new PasswordServiceImpl()).build();
+                .addService(new PasswordServiceImpl())
+                .addService(new CreateUserServiceImpl())
+                .addService(new PasswordServiceImpl())
+                .build();
 
         try {
             server.start();

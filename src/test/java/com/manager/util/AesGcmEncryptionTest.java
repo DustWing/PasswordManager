@@ -2,9 +2,10 @@ package com.manager.util;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AesGcmEncryptionTest {
+
 
     @Test
     void generateKey() {
@@ -12,6 +13,9 @@ class AesGcmEncryptionTest {
 
     @Test
     void generateIv() {
+        AesGcmEncryption.generateIv();
+        assertTrue(true);
+
     }
 
     @Test

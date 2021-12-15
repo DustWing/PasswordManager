@@ -1,9 +1,11 @@
 syntax = "proto3";
 option java_multiple_files = true;
 package com.pass.grpc;
+import "google/protobuf/empty.proto";
 
 
 message PasswordRequest {
+  string username = 1;
 }
 
 message PasswordResponse {
@@ -11,13 +13,32 @@ message PasswordResponse {
 }
 
 message PasswordDetails{
-  string username = 1;
-  string password = 2;
-  string url = 3;
-  string description = 4;
-  string iv =5;
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  string domain = 4;
+  string description = 5;
+  string category = 6;
 }
 
-service PasswordService{
+service PasswordService {
   rpc password(PasswordRequest) returns (PasswordResponse);
 }
+
+message CreateUserRequest {
+  string username = 1;
+  string masterPassword = 2;
+}
+
+service CreateUserService {
+  rpc createUser(CreateUserRequest) returns (google.protobuf.Empty);
+}
+
+message AddPasswordsRequest {
+  repeated PasswordDetails passwords = 1;
+}
+
+service AddPasswordsService {
+  rpc addPasswords(AddPasswordsRequest) returns (google.protobuf.Empty);
+}
+
