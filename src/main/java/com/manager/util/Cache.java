@@ -58,7 +58,8 @@ public class Cache {
         for (int i = 0; i < 100; i++) {
 
 
-            byte[] iv = AesGcmEncryption.generateIv();
+            byte[] userNameIVBytes = AesGcmEncryption.generateIv();
+            byte[] passwordIVBytes = AesGcmEncryption.generateIv();
 
             final String user = "user" + i;
             final String password = "pass1" + i;
@@ -66,16 +67,16 @@ public class Cache {
             final String description = "yousuck1" + i;
 
 
-            final String userNameIV = Base64.getEncoder().encodeToString(iv);
-            final String passwordIV = Base64.getEncoder().encodeToString(iv);
+            final String userNameIV = Base64.getEncoder().encodeToString(userNameIVBytes);
+            final String passwordIV = Base64.getEncoder().encodeToString(passwordIVBytes);
 
             try {
 
                 passwords.add(
                         new PasswordModel(
                                 UUID.randomUUID().toString(),
-                                userNameIV + AesGcmEncryption.encryptToBase64(user.getBytes(StandardCharsets.UTF_8), secretKey, iv),
-                                passwordIV + AesGcmEncryption.encryptToBase64(password.getBytes(StandardCharsets.UTF_8), secretKey, iv),
+                                userNameIV + AesGcmEncryption.encryptToBase64(user.getBytes(StandardCharsets.UTF_8), secretKey, userNameIVBytes),
+                                passwordIV + AesGcmEncryption.encryptToBase64(password.getBytes(StandardCharsets.UTF_8), secretKey, passwordIVBytes),
                                 domain,
                                 description,
                                 "default")
