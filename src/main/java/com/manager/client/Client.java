@@ -1,6 +1,5 @@
 package com.manager.client;
 
-import com.google.protobuf.Empty;
 import com.manager.util.AesGcmEncryption;
 import com.pass.grpc.PasswordDetails;
 import com.pass.grpc.PasswordRequest;
@@ -8,8 +7,6 @@ import com.pass.grpc.PasswordResponse;
 import com.pass.grpc.PasswordServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -20,7 +17,6 @@ import java.util.List;
 
 public final class Client {
 
-    private static final Logger logger = LogManager.getLogger(Client.class);
 
     public static void main(String[] args) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 8080)
@@ -34,7 +30,6 @@ public final class Client {
 
         channel.shutdown();
 
-        logger.info(passwordResponse.toString());
 
         List<PasswordDetails> passwordList = passwordResponse.getPasswordsList();
 
@@ -67,13 +62,8 @@ public final class Client {
 
                 final String description = e.getDescription();
 
-                logger.info("Username:" + username +
-                        "\t Password:" + password +
-                        "\t Url:" + url +
-                        "\t Description:" + description);
 
             } catch (Exception ex) {
-                logger.error("", ex);
             }
         });
 

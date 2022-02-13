@@ -7,21 +7,17 @@ import com.pass.grpc.PasswordRequest;
 import com.pass.grpc.PasswordResponse;
 import com.pass.grpc.PasswordServiceGrpc;
 import io.grpc.stub.StreamObserver;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.stream.Collectors;
 
 
 public class PasswordServiceImpl extends PasswordServiceGrpc.PasswordServiceImplBase {
 
-    private static final Logger logger = LogManager.getLogger(PasswordServiceImpl.class);
 
 
     @Override
     public void password(PasswordRequest request, StreamObserver<PasswordResponse> responseObserver) {
 
-        logger.info("PasswordServiceImpl [password] started...");
 
         responseObserver.onNext(
                 PasswordResponse.newBuilder()
@@ -39,7 +35,6 @@ public class PasswordServiceImpl extends PasswordServiceGrpc.PasswordServiceImpl
                         .build()
         );
         responseObserver.onCompleted();
-        logger.info("PasswordServiceImpl [password] finish.");
 
     }
 

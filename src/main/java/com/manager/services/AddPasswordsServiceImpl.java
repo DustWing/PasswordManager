@@ -9,7 +9,11 @@ public class AddPasswordsServiceImpl extends AddPasswordsServiceGrpc.AddPassword
     @Override
     public void addPasswords(AddPasswordsRequest request, StreamObserver<Empty> responseObserver) {
 
+
         request.getPasswordsList().forEach(e->{
+
+
+
         });
     }
 }

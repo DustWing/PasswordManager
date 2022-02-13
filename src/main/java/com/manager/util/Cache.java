@@ -2,8 +2,6 @@ package com.manager.util;
 
 import com.manager.models.PasswordModel;
 import com.manager.models.UserModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +17,6 @@ import java.util.concurrent.ConcurrentMap;
 
 public class Cache {
 
-    private static final Logger logger = LogManager.getLogger(Cache.class);
 
 
     public static final ConcurrentHashMap<String, List<PasswordModel>> cachedPasswords;
@@ -82,7 +79,6 @@ public class Cache {
                                 "default")
                 );
             } catch (Exception e) {
-                logger.error("PasswordServiceImpl [createPassList]", e);
             }
 
 
